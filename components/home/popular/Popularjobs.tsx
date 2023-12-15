@@ -11,12 +11,21 @@ import styles from "./popularjobs.style";
 import { COLORS, SIZES } from "../../../constants";
 import PopularJobCard from "../../common/cards/popular/PopularJobCard";
 import { useFetch } from "../../../hook/useFetch";
+import { useRouter } from "expo-router";
 
 const Popularjobs = () => {
+  const router = useRouter();
   const { data, error, isLoading } = useFetch<any>("search", {
     query: "React developer",
     num_pages: 1,
   });
+
+  const [selectedJob, setSelectedJob] = React.useState("");
+
+  const handleCardPress = (item: any) => {
+    router.push(`/job_details/${item.job_id}`);
+    setSelectedJob(item.job_id);
+  };
 
   return (
     <View style={styles.container}>
@@ -37,9 +46,9 @@ const Popularjobs = () => {
             data={data}
             renderItem={({ item }) => (
               <PopularJobCard
-                handleCardPress={() => {}}
+                handleCardPress={() => handleCardPress(item)}
                 item={item}
-                selectedJob=""
+                selectedJob={selectedJob}
               />
             )}
             keyExtractor={(item) => item.job_id}
