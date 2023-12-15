@@ -5,7 +5,7 @@ import { RAPID_API_KEY } from "@env";
 export type RequestMethods = "GET" | "PUT" | "POST" | "DELETE";
 
 export const useFetch = <T = unknown>(endpoint: string, query?: any) => {
-  const [data, setData] = useState<unknown>();
+  const [data, setData] = useState<T>();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -16,14 +16,18 @@ export const useFetch = <T = unknown>(endpoint: string, query?: any) => {
     "X-RapidAPI-Host": "jsearch.p.rapidapi.com",
   };
 
-  const fetchData = async <T>() => {
+  const fetchData = async <T>(OptQuery?: any) => {
     setIsLoading(true);
     try {
+      let params = { ...query };
+      if (OptQuery) {
+        params = { ...OptQuery };
+      }
       const { data } = await axios.get<T>(url, {
-        params: { ...query },
+        params,
         headers: { ...headers },
       });
-      setData(data);
+      setData((data as any).data);
       setIsLoading(false);
     } catch (error: any) {
       console.log(error.message);
@@ -38,9 +42,9 @@ export const useFetch = <T = unknown>(endpoint: string, query?: any) => {
     fetchData<T>();
   }, []);
 
-  const refetch = () => {
+  const refetch = (query?: any) => {
     setIsLoading(true);
-    fetchData<T>();
+    fetchData<T>(query);
   };
 
   return { data, isLoading, error, refetch };

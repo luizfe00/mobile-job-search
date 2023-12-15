@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -11,16 +11,12 @@ import styles from "./popularjobs.style";
 import { COLORS, SIZES } from "../../../constants";
 import PopularJobCard from "../../common/cards/popular/PopularJobCard";
 import { useFetch } from "../../../hook/useFetch";
-import data from "../../../mock.json";
 
 const Popularjobs = () => {
-  // const { data, error, isLoading } = useFetch("search", {
-  //   query: "React developer",
-  //   num_pages: 1,
-  // });
-
-  const isLoading = false;
-  const error = false;
+  const { data, error, isLoading } = useFetch<any>("search", {
+    query: "React developer",
+    num_pages: 1,
+  });
 
   return (
     <View style={styles.container}>
@@ -38,7 +34,7 @@ const Popularjobs = () => {
           <Text>Something went wrong</Text>
         ) : (
           <FlatList
-            data={data.data}
+            data={data}
             renderItem={({ item }) => (
               <PopularJobCard
                 handleCardPress={() => {}}

@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React from "react";
-import detailsData from "../../job-details.mock.json";
 import { Stack, useGlobalSearchParams, useRouter } from "expo-router";
 import { useFetch } from "../../hook/useFetch";
 import { COLORS, SIZES, icons } from "../../constants";
@@ -19,7 +18,6 @@ import {
   ScreenHeaderBtn,
   Specifics,
 } from "../../components";
-import { checkImageURL } from "../../utils";
 
 const jobTabs = ["About", "Qualifications", "Responsabilities"];
 
@@ -30,16 +28,15 @@ const JobDetails = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(jobTabs[0]);
 
-  const onRefresh = () => {};
+  const { data, isLoading, error, refetch } = useFetch<any>("job-details", {
+    job_id: params.id,
+  });
 
-  // const { data, isLoading, error, refetch } = useFetch('job-details', {
-  //   job_id: params.id
-  // })
-
-  const isLoading = false;
-  const error = false;
-  const data = detailsData.data;
-  const refetch = () => {};
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    refetch();
+    setRefreshing(false);
+  }, []);
 
   const displayTabContent = () => {
     switch (activeTab) {
