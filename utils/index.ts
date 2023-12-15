@@ -1,4 +1,4 @@
-export const checkImageURL = (url: string) => {
+export const checkImageURL = (url: any) => {
   if (!url) return false;
   else {
     const pattern = new RegExp(
