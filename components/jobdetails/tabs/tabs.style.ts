@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { COLORS, SHADOWS, SIZES } from "../../../constants";
 
-const styles = (name: string, activeTab: string) =>
+const styles = (name?: string, activeTab?: string) =>
   StyleSheet.create({
     container: {
       marginTop: SIZES.small,
